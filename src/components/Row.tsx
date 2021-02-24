@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Movie } from '../movie-types';
 import axios from '../axios';
+// import styles from './styles.module.scss';
+import './Row.scss';
+
+const base_url = 'https://image.tmdb.org/t/p/original';
 
 type Props = {
   title: string;
@@ -8,7 +12,7 @@ type Props = {
   isLargeRow?: boolean;
 };
 
-export const Row = ({ title, fetchUrl }: Props) => {
+export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
   const [movies, setMovies] = useState<Movie[]>([]);
 
   // urlが更新される度に
@@ -21,19 +25,29 @@ export const Row = ({ title, fetchUrl }: Props) => {
     fetchData();
   }, [fetchUrl]);
 
+  console.log(title);
+  console.log(fetchUrl);
   console.log(movies);
 
   return (
     <div className='Row'>
-      <h1>Row</h1>
       <h2>{title}</h2>
-      {/* {movies?.map((movie, i) => {
-        return (
-          <div key={i}>
-            <h3>{movie}</h3>
-          </div>
-        );
-      })} */}
+      <div className='Row-posters'>
+        {/* ボスターコンテンツ */}
+        {movies.map((movie, i) => {
+          return (
+            <img
+              key={movie.id + i}
+              className={`Row-poster ${isLargeRow && 'Row-poster-large'}`}
+              data-is-largerow={isLargeRow}
+              src={`${base_url}${
+                isLargeRow ? movie.poster_path : movie.backdrop_path
+              }`}
+              alt={movie.title}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };

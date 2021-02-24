@@ -52,3 +52,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ## json to type
 
 [Document](https://app.quicktype.io/)
+
+## 参考
+
+- [React Component 分業の覚書](https://zenn.dev/takepepe/articles/division-labor-of-react)
