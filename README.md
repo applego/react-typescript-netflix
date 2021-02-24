@@ -48,3 +48,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ## The Movie Database API
 
 [Document](https://developers.themoviedb.org/3/trending/get-trending).
+
+## json to type
+
+[Document](https://app.quicktype.io/)
