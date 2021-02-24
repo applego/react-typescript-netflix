@@ -20,6 +20,7 @@ export const Row = ({ title, fetchUrl }: Props) => {
     }
     fetchData();
   }, [fetchUrl]);
+
   console.log(movies);
 
   return (
