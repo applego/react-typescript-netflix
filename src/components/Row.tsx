@@ -14,19 +14,26 @@ export const Row = ({ title, fetchUrl }: Props) => {
   // urlが更新される度に
   useEffect(() => {
     async function fetchData() {
-      const request = await axios.get(fetchUrl);
-      setMovies(request.data.results);
-      return request;
+      const response = await axios.get(fetchUrl);
+      setMovies(response.data.results);
+      return response;
     }
     fetchData();
   }, [fetchUrl]);
 
-  console.info(title);
   console.log(movies);
 
   return (
     <div className='Row'>
-      <h1>{title}</h1>
+      <h1>Row</h1>
+      <h2>{title}</h2>
+      {/* {movies?.map((movie, i) => {
+        return (
+          <div key={i}>
+            <h3>{movie}</h3>
+          </div>
+        );
+      })} */}
     </div>
   );
 };
