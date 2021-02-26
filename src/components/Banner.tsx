@@ -32,7 +32,7 @@ export const Banner = () => {
 
   // descriptionの切り捨て用関数
   function shorten(str: string | undefined, n: number) {
-    if (str == undefined) return;
+    if (str === undefined) return;
     return str.length > n ? str.substr(0, n - 1) + '...' : str;
   }
 
