@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Movie } from '../movie-types';
+import { Movie2 } from '../movie2-types';
 import axios from '../axios';
 // import styles from './styles.module.scss';
 import './Row.scss';
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [movies, setMovies] = useState<Movie2[]>([]);
 
   // urlが更新される度に
   useEffect(() => {
@@ -43,7 +43,7 @@ export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
               src={`${base_url}${
                 isLargeRow ? movie.poster_path : movie.backdrop_path
               }`}
-              alt={movie.title}
+              alt={movie.name}
             />
           );
         })}
