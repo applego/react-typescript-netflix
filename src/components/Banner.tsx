@@ -13,8 +13,8 @@ export const Banner = () => {
   useEffect(() => {
     async function fetchData() {
       const response = await axios.get(requests.fetchNetflixOriginals);
-      console.log('banner:useEffect()');
-      console.log(response.data.results);
+      // console.log('banner:useEffect()');
+      // console.log(response.data.results);
 
       // apiからランダムで値を取得
       setMovie(
@@ -27,8 +27,8 @@ export const Banner = () => {
     fetchData();
   }, []);
 
-  console.log('banner:Banner()');
-  console.log(movie);
+  // console.log('banner:Banner()');
+  // console.log(movie);
 
   // descriptionの切り捨て用関数
   function shorten(str: string | undefined, n: number) {
