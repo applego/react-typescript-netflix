@@ -12,4 +12,6 @@ export const requests = {
   fetchHorrorMovies: `/discover/tv?api_key=${API_KEY}&with_genres=${genres.Horror.id}`,
   fetchRomanceMovies: `/discover/tv?api_key=${API_KEY}&with_genres=${genres.Romance.id}`,
   fetchDocumentMovies: `/discover/tv?api_key=${API_KEY}&with_genres=${genres.Documentary.id}`,
+
+  fetchTrailerUrl: `/movie/MOVIE_ID/videos?api_key=${API_KEY}`,
 };
