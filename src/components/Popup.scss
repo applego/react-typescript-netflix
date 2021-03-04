@@ -1,0 +1,32 @@
+$content-width: 110px;
+$content-height: 24px;
+$content-width-half: 25px;
+$content-height-half: 10px;
+
+.Popup {
+  // transform: scale(0);
+  // transform-origin: top left;
+  // transition: transform 0.2s;
+  &-container {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+
+    min-width: $content-width;
+    // max-width: 60px;
+    min-height: $content-height;
+    // max-height: 30px;
+    // background-color: #00bfff;
+  }
+  &-content {
+    margin: -$content-height-half 0 0 -$content-width-half;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: $content-width;
+    height: $content-height;
+    background-color: #00ff00;
+    border-radius: 3px;
+  }
+}
