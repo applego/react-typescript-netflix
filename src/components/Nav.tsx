@@ -21,7 +21,6 @@ export const Nav = (props: Props) => {
 
   useEffect(() => {
     const handleShow = () => {
-      console.log('handleShow:' + window.scrollY);
       if (window.scrollY > 100) {
         setShow(true);
         setBackGroundColor(randomColorRGB());

@@ -6,6 +6,7 @@ import axios from '../axios';
 import './Row.scss';
 import { requests } from '../request';
 import YouTube from 'react-youtube';
+import { Popup } from './Popup';
 
 const base_url = 'https://image.tmdb.org/t/p/original';
 
@@ -23,7 +24,13 @@ type Options = {
 
 export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
   const [movies, setMovies] = useState<Movie2[]>([]);
+  const [showingTrailerMovieId, setShowingTrailerMovieId] = useState<string>(
+    ''
+  );
   const [trailerUrl, setTrailerUrl] = useState<string>('');
+  const [isFoundTrailerUrl, setIsFoundTrailerUrl] = useState<boolean>(false);
+  const [isShowingTrailer, setIsShowingTrailer] = useState<boolean>(false);
+  const [isShowingPopup, setIsShowingPopup] = useState<boolean>(false);
 
   // urlが更新される度に
   useEffect(() => {
@@ -34,6 +41,14 @@ export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
     }
     fetchMoviesData();
   }, [fetchUrl]);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (isShowingPopup) {
+      timeout = setTimeout(() => setIsShowingPopup(false), 2000);
+    }
+    return () => clearTimeout(timeout);
+  }, [isShowingPopup]);
 
   const opts: Options = {
     height: '390',
@@ -52,17 +67,42 @@ export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
   それに対してuseCallbackは、第一引数に渡しているコールバック関数をメモ化し、不要な再レンダリングを防いでくれます。
   */
 
-    if (trailerUrl) {
-      setTrailerUrl('');
-      return;
+    if (showingTrailerMovieId !== movie.id.toString()) {
+      // クリックした映画が前回と異なる
+      // 新たにmovieidとtrailerurlをセット
+      setShowingTrailerMovieId(movie.id.toString());
+      await axios
+        .get(requests.fetchTrailerUrl.replace('MOVIE_ID', movie.id.toString()))
+        .then((response) => {
+          if (response.data.results[0]) {
+            setIsFoundTrailerUrl(true);
+            setTrailerUrl(response.data.results[0]?.key);
+          } else {
+            setIsFoundTrailerUrl(false);
+            setIsShowingPopup(true);
+            setIsShowingTrailer(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsFoundTrailerUrl(false);
+          setIsShowingPopup(true);
+          setIsShowingTrailer(false);
+        });
+    } else {
+      // クリックした映画が前回と同じ
+      // Trailerの表示中の場合非表示に
+      if (isShowingTrailer) setIsShowingTrailer(false);
+      else {
+        // 非表示の場合
+        if (isFoundTrailerUrl) {
+          // trailerurlが見つかってれば
+          setIsShowingTrailer(true);
+        } else {
+          setIsShowingPopup(true);
+        }
+      }
     }
-    console.log(
-      requests.fetchTrailerUrl.replace('MOVIE_ID', movie.id.toString())
-    );
-    let trailerurl = await axios.get(
-      requests.fetchTrailerUrl.replace('MOVIE_ID', movie.id.toString())
-    );
-    setTrailerUrl(trailerurl.data.results[0]?.key);
   };
 
   // console.log(title);
@@ -89,7 +129,8 @@ export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
           );
         })}
       </div>
-      {trailerUrl && <YouTube videoId={trailerUrl} opts={opts} />}
+      {isShowingTrailer && <YouTube videoId={trailerUrl} opts={opts} />}
+      {isShowingPopup && <Popup msg='Not Found...' />}
     </div>
   );
 };
