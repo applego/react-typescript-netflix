@@ -45,7 +45,7 @@ export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     if (isShowingPopup) {
-      timeout = setTimeout(() => setIsShowingPopup(false), 2000);
+      timeout = setTimeout(() => setIsShowingPopup(false), 200000); //00
     }
     return () => clearTimeout(timeout);
   }, [isShowingPopup]);
