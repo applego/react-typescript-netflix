@@ -6,8 +6,10 @@ type Props = {
 
 export const Popup = ({ msg }: Props) => {
   return (
-    <div className='Popup'>
-      <span>{msg}</span>
+    <div className='Popup-container'>
+      <div className='Popup-content'>
+        <span>{msg}</span>
+      </div>
     </div>
   );
 };
