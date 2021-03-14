@@ -22,6 +22,10 @@ type Options = {
   playerVars: { autoplay: 0 | 1 | undefined };
 };
 
+type Color = {
+  [key: string]: number;
+};
+
 export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
   const [movies, setMovies] = useState<Movie2[]>([]);
   const [showingTrailerMovieId, setShowingTrailerMovieId] = useState<string>(
@@ -29,6 +33,7 @@ export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
   );
   const [trailerUrl, setTrailerUrl] = useState<string>('');
   const [isFoundTrailerUrl, setIsFoundTrailerUrl] = useState<boolean>(false);
+  const [notFoundBackColor, setNotFoundBackColor] = useState('');
   const [isShowingTrailer, setIsShowingTrailer] = useState<boolean>(false);
   const [isShowingPopup, setIsShowingPopup] = useState<boolean>(false);
 
@@ -58,6 +63,14 @@ export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
     },
   };
 
+  const randomColorRGB = () => {
+    let color: Color = { r: 17, g: 17, b: 17 };
+    for (let i in color) {
+      color[i] = Math.floor(Math.random() * 256);
+    }
+    return `rgb(${color.r}, ${color.g}, ${color.b})`;
+  };
+
   const handleClick = async (movie: Movie2) => {
     /**  NG: メモ化したコンポーネントに渡さず、そのまま利用しても意味がない
    * https://ics.media/entry/201106/
@@ -71,6 +84,8 @@ export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
       // クリックした映画が前回と異なる
       // 新たにmovieidとtrailerurlをセット
       setShowingTrailerMovieId(movie.id.toString());
+      // not foundの背景色を変える
+      setNotFoundBackColor(randomColorRGB());
       await axios
         .get(requests.fetchTrailerUrl.replace('MOVIE_ID', movie.id.toString()))
         .then((response) => {
@@ -130,7 +145,9 @@ export const Row = ({ title, fetchUrl, isLargeRow }: Props) => {
         })}
       </div>
       {isShowingTrailer && <YouTube videoId={trailerUrl} opts={opts} />}
-      {isShowingPopup && <Popup msg='Not Found...' />}
+      {isShowingPopup && (
+        <Popup msg='Not Found...' backgroundColor={notFoundBackColor} />
+      )}
     </div>
   );
 };
